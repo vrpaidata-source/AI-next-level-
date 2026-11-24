@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-next-level",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-24",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "vars": {
+    "SUPABASE_URL": "https://kuqjjkpeqpwfoczhjaui.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_vbF6X0SozXJtBqXhzg4Idw_gmPauNRu"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
