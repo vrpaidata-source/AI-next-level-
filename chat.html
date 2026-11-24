@@ -1,474 +1,198 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VRPAIData AI Assistant</title>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: #050b18;
-  color: white;
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
-}
-
-.sidebar {
-  width: 250px;
-  background: #091529;
-  border-right: 1px solid #1b2d48;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 35px;
-}
-
-.logo span,
-.topbar span {
-  color: #28aaff;
-}
-
-.newchat {
-  padding: 14px;
-  border: 1px solid #24517a;
-  border-radius: 10px;
-  background: #102440;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.sidebar-info {
-  margin-top: 30px;
-  color: #7890ae;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.topbar {
-  padding: 20px 25px;
-  border-bottom: 1px solid #1b2d48;
-  font-size: 19px;
-  font-weight: bold;
-}
-
-.messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.welcome {
-  text-align: center;
-  margin: auto;
-  max-width: 600px;
-  padding: 20px;
-}
-
-.welcome h1 {
-  font-size: 36px;
-  margin-bottom: 15px;
-}
-
-.gradient {
-  background: linear-gradient(90deg,#278cff,#00e1ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.welcome p {
-  color: #91a5c0;
-  line-height: 1.8;
-}
-
-.message {
-  max-width: 750px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 17px 20px;
-  border-radius: 15px;
-  background: #10213a;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.message.user {
-  background: #12345a;
-}
-
-.sender {
-  font-size: 12px;
-  color: #45baff;
-  margin-bottom: 9px;
-  font-weight: bold;
-}
-
-.message-content {
-  font-size: 16px;
-}
-
-.composer {
-  padding: 18px 20px 25px;
-  max-width: 850px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.inputbox {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: #10213a;
-  border: 1px solid #28517b;
-  border-radius: 16px;
-}
-
-.inputbox input {
-  flex: 1;
-  min-width: 0;
-  background: transparent;
-  border: 0;
-  outline: 0;
-  color: white;
-  font-size: 16px;
-  padding: 12px;
-}
-
-.send {
-  background: linear-gradient(90deg,#087cff,#00c8ff);
-  color: white;
-  border: 0;
-  border-radius: 12px;
-  padding: 0 22px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.send:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.note {
-  text-align: center;
-  color: #7186a2;
-  font-size: 11px;
-  margin-top: 12px;
-}
-
-.typing {
-  color: #54caff;
-  font-size: 14px;
-  text-align: center;
-  padding: 10px;
-}
-
-@media(max-width:650px) {
-  .sidebar {
-    width: 65px;
-    padding: 12px;
-  }
-
-  .logo {
-    font-size: 12px;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-  }
-
-  .newchat {
-    font-size: 0;
-    padding: 12px;
-  }
-
-  .newchat:after {
-    content: "+";
-    font-size: 22px;
-  }
-
-  .sidebar-info {
-    display: none;
-  }
-
-  .topbar {
-    padding: 19px 15px;
-    font-size: 16px;
-  }
-
-  .welcome h1 {
-    font-size: 28px;
-  }
-
-  .message {
-    padding: 15px;
-  }
-
-  .composer {
-    padding: 12px;
-  }
-
-  .inputbox input {
-    font-size: 14px;
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050b18;color:white;font-family:Arial,sans-serif;height:100vh;display:flex;overflow:hidden}
+.sidebar{width:250px;background:#091529;border-right:1px solid #1b2d48;padding:22px;display:flex;flex-direction:column;flex-shrink:0}
+.logo{font-size:22px;font-weight:bold;margin-bottom:35px}
+.logo span,.topbar span{color:#28aaff}
+.newchat{padding:14px;border:1px solid #24517a;border-radius:10px;background:#102440;color:white;cursor:pointer;font-size:15px}
+.sidebar-info{margin-top:30px;color:#7890ae;font-size:12px;line-height:1.7}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{padding:16px 20px;border-bottom:1px solid #1b2d48;font-size:19px;font-weight:bold;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logout{border:1px solid #315477;background:#10213a;color:#d8eaff;padding:9px 13px;border-radius:9px;cursor:pointer;font-size:13px}
+.messages{flex:1;overflow-y:auto;padding:30px 20px;display:flex;flex-direction:column;gap:20px}
+.welcome{text-align:center;margin:auto;max-width:600px;padding:20px}
+.welcome h1{font-size:36px;margin-bottom:15px}
+.gradient{background:linear-gradient(90deg,#278cff,#00e1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome p{color:#91a5c0;line-height:1.8}
+.message{max-width:750px;width:100%;margin:0 auto;padding:17px 20px;border-radius:15px;background:#10213a;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.message.user{background:#12345a}
+.sender{font-size:12px;color:#45baff;margin-bottom:9px;font-weight:bold}
+.message-content{font-size:16px}
+.composer{padding:18px 20px 25px;max-width:850px;width:100%;margin:0 auto}
+.inputbox{display:flex;gap:10px;padding:10px;background:#10213a;border:1px solid #28517b;border-radius:16px}
+.inputbox input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;font-size:16px;padding:12px}
+.send{background:linear-gradient(90deg,#087cff,#00c8ff);color:white;border:0;border-radius:12px;padding:0 22px;font-size:22px;cursor:pointer}
+.send:disabled,.newchat:disabled{opacity:.5;cursor:not-allowed}
+.note{text-align:center;color:#7186a2;font-size:11px;margin-top:12px}
+.typing{color:#54caff;font-size:14px;text-align:center;padding:10px}
+@media(max-width:650px){
+.sidebar{width:65px;padding:12px}
+.logo{font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.newchat{font-size:0;padding:12px}
+.newchat:after{content:"+";font-size:22px}
+.sidebar-info{display:none}
+.topbar{padding:16px 12px;font-size:15px}
+.welcome h1{font-size:28px}
+.message{padding:15px}
+.composer{padding:12px}
+.inputbox input{font-size:14px}
+.logout{padding:8px;font-size:12px}
 }
 </style>
 </head>
-
 <body>
-
 <aside class="sidebar">
-
-  <div class="logo">
-    VRPAIData <span>AI</span>
-  </div>
-
-  <button class="newchat" onclick="newChat()">
-    + New Chat
-  </button>
-
-  <div class="sidebar-info">
-    YOUR AI WORKSPACE
-    <br><br>
-    Intelligent AI Assistant
-  </div>
-
+  <div class="logo">VRPAIData <span>AI</span></div>
+  <button class="newchat" id="newChatButton" type="button">＋ New Chat</button>
+  <div class="sidebar-info">YOUR AI WORKSPACE<br><br>Signed-in account only</div>
 </aside>
-
 <main class="main">
-
   <header class="topbar">
-    ✦ VRPAIData <span>AI Assistant</span>
+    <div>✦ VRPAIData <span>AI Assistant</span></div>
+    <button class="logout" id="logoutButton" type="button">Log out</button>
   </header>
-
   <section class="messages" id="messages">
-
     <div class="welcome" id="welcome">
-      <h1>
-        Hello! <span class="gradient">Welcome.</span>
-      </h1>
-
-      <p>
-        Your intelligent AI workspace starts here.
-        Ask anything and explore the power of AI.
-      </p>
+      <h1>Hello! <span class="gradient">Welcome.</span></h1>
+      <p>Your intelligent AI workspace starts here. Ask anything and explore the power of AI.</p>
     </div>
-
   </section>
-
   <div class="composer">
-
     <form class="inputbox" id="chatForm">
-
-      <input
-        id="userInput"
-        type="text"
-        placeholder="Message VRPAIData AI..."
-        autocomplete="off"
-        maxlength="4000"
-        required
-      >
-
-      <button class="send" id="sendButton" type="submit">
-        ➤
-      </button>
-
+      <input id="userInput" type="text" placeholder="Message VRPAIData AI..." autocomplete="off" maxlength="4000" required>
+      <button class="send" id="sendButton" type="submit">➤</button>
     </form>
-
-    <div class="note">
-      VRPAIData AI · Powered by Cloudflare Workers AI
-    </div>
-
+    <div class="note">VRPAIData AI · Secure signed-in access</div>
   </div>
-
 </main>
-
 <script>
+const SUPABASE_URL = "https://kuqjjkpeqpwfoczhjaui.supabase.co";
+const SUPABASE_KEY = "sb_publishable_vbF6X0SozXJtBqXhzg4Idw_gmPauNRu";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const form = document.getElementById("chatForm");
 const input = document.getElementById("userInput");
 const messages = document.getElementById("messages");
 const sendButton = document.getElementById("sendButton");
+const logoutButton = document.getElementById("logoutButton");
+const loginUrl = new URL("login.html", window.location.href).href;
 
 function addMessage(text, type) {
-
   const welcome = document.getElementById("welcome");
-
-  if (welcome) {
-    welcome.remove();
-  }
-
+  if (welcome) welcome.remove();
   const box = document.createElement("div");
   box.className = "message " + type;
-
   const sender = document.createElement("div");
   sender.className = "sender";
-
-  sender.textContent =
-    type === "user" ? "YOU" : "VRPAIDATA AI";
-
+  sender.textContent = type === "user" ? "YOU" : "VRPAIDATA AI";
   const content = document.createElement("div");
   content.className = "message-content";
   content.textContent = text;
-
-  box.appendChild(sender);
-  box.appendChild(content);
-
+  box.append(sender, content);
   messages.appendChild(box);
-
   messages.scrollTop = messages.scrollHeight;
-
 }
 
 function showTyping() {
-
   const typing = document.createElement("div");
-
   typing.id = "typing";
   typing.className = "typing";
   typing.textContent = "VRPAIData AI is thinking...";
-
   messages.appendChild(typing);
-
   messages.scrollTop = messages.scrollHeight;
-
 }
 
 function removeTyping() {
-
   const typing = document.getElementById("typing");
-
-  if (typing) {
-    typing.remove();
-  }
-
+  if (typing) typing.remove();
 }
 
+async function requireSession() {
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error || !data.session) {
+    window.location.replace(loginUrl);
+    return false;
+  }
+  return true;
+}
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT" || !session) {
+    window.location.replace(loginUrl);
+  }
+});
+
 async function sendMessage(text) {
-
   showTyping();
-
   sendButton.disabled = true;
   input.disabled = true;
-
   try {
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) {
+      window.location.replace(loginUrl);
+      return;
+    }
 
     const response = await fetch("/api/chat", {
-
       method: "POST",
-
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
       },
-
-      body: JSON.stringify({
-        message: text
-      })
-
+      body: JSON.stringify({ message: text })
     });
 
     const data = await response.json();
-
     removeTyping();
 
-    if (!response.ok) {
-
-      throw new Error(
-        data.error || "AI service error"
-      );
-
+    if (response.status === 401) {
+      await supabaseClient.auth.signOut();
+      window.location.replace(loginUrl);
+      return;
     }
-
-    if (!data.reply) {
-
-      throw new Error("AI response is empty");
-
-    }
-
+    if (!response.ok) throw new Error(data.error || "AI service error");
+    if (!data.reply) throw new Error("AI response is empty");
     addMessage(data.reply, "assistant");
-
   } catch (error) {
-
     removeTyping();
-
-    addMessage(
-      "Sorry! " + error.message,
-      "assistant"
-    );
-
+    addMessage("Sorry! " + error.message, "assistant");
   } finally {
-
     sendButton.disabled = false;
     input.disabled = false;
     input.focus();
-
   }
-
 }
 
-form.addEventListener("submit", async function(e) {
-
-  e.preventDefault();
-
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
   const text = input.value.trim();
-
-  if (!text) return;
-
+  if (!text || sendButton.disabled) return;
   addMessage(text, "user");
-
   input.value = "";
-
   await sendMessage(text);
-
 });
 
-function newChat() {
-
-  messages.innerHTML = `
-    <div class="welcome" id="welcome">
-      <h1>
-        Hello! <span class="gradient">Welcome.</span>
-      </h1>
-      <p>
-        Your intelligent AI workspace starts here.
-        Ask anything and explore the power of AI.
-      </p>
-    </div>
-  `;
-
+document.getElementById("newChatButton").addEventListener("click", () => {
+  messages.innerHTML = '<div class="welcome" id="welcome"><h1>Hello! <span class="gradient">Welcome.</span></h1><p>Your intelligent AI workspace starts here. Ask anything and explore the power of AI.</p></div>';
   input.value = "";
-  input.disabled = false;
-  sendButton.disabled = false;
   input.focus();
+});
 
-}
+logoutButton.addEventListener("click", async () => {
+  logoutButton.disabled = true;
+  await supabaseClient.auth.signOut();
+  window.location.replace(loginUrl);
+});
 
+requireSession();
 </script>
-
 </body>
 </html>
