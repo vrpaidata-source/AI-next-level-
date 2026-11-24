@@ -4,152 +4,471 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VRPAIData AI Chat</title>
+<title>VRPAIData AI Assistant</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:#050b18;color:white;font-family:Arial,sans-serif;
-  min-height:100vh;display:flex;overflow:hidden
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-.sidebar{
-  width:260px;background:#091529;border-right:1px solid #1b2d48;
-  padding:22px;display:flex;flex-direction:column
+
+body {
+  background: #050b18;
+  color: white;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
 }
-.logo{font-size:22px;font-weight:bold;margin-bottom:30px}
-.logo span{color:#28aaff}
-.newchat{
-  padding:13px;border:1px solid #24517a;border-radius:10px;
-  background:#102440;color:white;cursor:pointer
+
+.sidebar {
+  width: 250px;
+  background: #091529;
+  border-right: 1px solid #1b2d48;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
-.sidebar p{color:#7890ae;font-size:12px;margin-top:30px}
-.main{flex:1;display:flex;flex-direction:column;min-width:0}
-.topbar{
-  padding:20px 25px;border-bottom:1px solid #1b2d48;
-  font-weight:bold
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 35px;
 }
-.topbar span{color:#31b9ff}
-.messages{
-  flex:1;overflow-y:auto;padding:35px 20px;
-  display:flex;flex-direction:column;gap:22px
+
+.logo span,
+.topbar span {
+  color: #28aaff;
 }
-.welcome{text-align:center;margin:auto;max-width:600px}
-.welcome h1{font-size:36px;margin-bottom:15px}
-.gradient{
-  background:linear-gradient(90deg,#278cff,#00e1ff);
-  -webkit-background-clip:text;color:transparent
+
+.newchat {
+  padding: 14px;
+  border: 1px solid #24517a;
+  border-radius: 10px;
+  background: #102440;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
 }
-.welcome p{color:#91a5c0;line-height:1.7}
-.message{
-  max-width:750px;width:100%;margin:0 auto;
-  padding:16px 19px;border-radius:13px;
-  background:#10213a;line-height:1.6;
-  overflow-wrap:anywhere
+
+.sidebar-info {
+  margin-top: 30px;
+  color: #7890ae;
+  font-size: 12px;
+  line-height: 1.7;
 }
-.message.user{background:#12345a}
-.sender{font-size:12px;color:#45baff;margin-bottom:8px}
-.composer{
-  padding:18px 20px 25px;max-width:850px;width:100%;
-  margin:0 auto
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
-.inputbox{
-  display:flex;gap:10px;padding:10px;
-  background:#10213a;border:1px solid #28517b;
-  border-radius:15px
+
+.topbar {
+  padding: 20px 25px;
+  border-bottom: 1px solid #1b2d48;
+  font-size: 19px;
+  font-weight: bold;
 }
-input{
-  flex:1;min-width:0;background:transparent;
-  border:0;outline:0;color:white;font-size:16px;padding:10px
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-button.send{
-  background:linear-gradient(90deg,#087cff,#00c8ff);
-  color:white;border:0;border-radius:10px;
-  padding:0 20px;font-size:20px;cursor:pointer
+
+.welcome {
+  text-align: center;
+  margin: auto;
+  max-width: 600px;
+  padding: 20px;
 }
-.note{text-align:center;color:#7186a2;font-size:11px;margin-top:12px}
-@media(max-width:650px){
-  .sidebar{width:65px;padding:12px}
-  .logo{font-size:12px;overflow:hidden}
-  .newchat{font-size:0;padding:12px}
-  .newchat:after{content:"+";font-size:22px}
-  .sidebar p{display:none}
-  .topbar{padding:18px}
-  .welcome h1{font-size:28px}
+
+.welcome h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.gradient {
+  background: linear-gradient(90deg,#278cff,#00e1ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.welcome p {
+  color: #91a5c0;
+  line-height: 1.8;
+}
+
+.message {
+  max-width: 750px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 17px 20px;
+  border-radius: 15px;
+  background: #10213a;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.user {
+  background: #12345a;
+}
+
+.sender {
+  font-size: 12px;
+  color: #45baff;
+  margin-bottom: 9px;
+  font-weight: bold;
+}
+
+.message-content {
+  font-size: 16px;
+}
+
+.composer {
+  padding: 18px 20px 25px;
+  max-width: 850px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.inputbox {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #10213a;
+  border: 1px solid #28517b;
+  border-radius: 16px;
+}
+
+.inputbox input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+}
+
+.send {
+  background: linear-gradient(90deg,#087cff,#00c8ff);
+  color: white;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 22px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.note {
+  text-align: center;
+  color: #7186a2;
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+.typing {
+  color: #54caff;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+}
+
+@media(max-width:650px) {
+  .sidebar {
+    width: 65px;
+    padding: 12px;
+  }
+
+  .logo {
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .newchat {
+    font-size: 0;
+    padding: 12px;
+  }
+
+  .newchat:after {
+    content: "+";
+    font-size: 22px;
+  }
+
+  .sidebar-info {
+    display: none;
+  }
+
+  .topbar {
+    padding: 19px 15px;
+    font-size: 16px;
+  }
+
+  .welcome h1 {
+    font-size: 28px;
+  }
+
+  .message {
+    padding: 15px;
+  }
+
+  .composer {
+    padding: 12px;
+  }
+
+  .inputbox input {
+    font-size: 14px;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <aside class="sidebar">
-  <div class="logo">VRPAIData <span>AI</span></div>
-  <button class="newchat" onclick="newChat()">＋ New Chat</button>
-  <p>YOUR AI WORKSPACE</p>
+
+  <div class="logo">
+    VRPAIData <span>AI</span>
+  </div>
+
+  <button class="newchat" onclick="newChat()">
+    + New Chat
+  </button>
+
+  <div class="sidebar-info">
+    YOUR AI WORKSPACE
+    <br><br>
+    Intelligent AI Assistant
+  </div>
+
 </aside>
 
 <main class="main">
-  <div class="topbar">✦ VRPAIData <span>AI Assistant</span></div>
 
-  <div class="messages" id="messages">
+  <header class="topbar">
+    ✦ VRPAIData <span>AI Assistant</span>
+  </header>
+
+  <section class="messages" id="messages">
+
     <div class="welcome" id="welcome">
-      <h1>Hello! <span class="gradient">Welcome.</span></h1>
-      <p>Your intelligent AI workspace starts here.
-      Ask a question and explore new possibilities.</p>
+      <h1>
+        Hello! <span class="gradient">Welcome.</span>
+      </h1>
+
+      <p>
+        Your intelligent AI workspace starts here.
+        Ask anything and explore the power of AI.
+      </p>
     </div>
-  </div>
+
+  </section>
 
   <div class="composer">
+
     <form class="inputbox" id="chatForm">
-      <input id="userInput" type="text"
-        placeholder="Message VRPAIData AI..." autocomplete="off">
-      <button class="send" type="submit">➤</button>
+
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Message VRPAIData AI..."
+        autocomplete="off"
+        maxlength="4000"
+        required
+      >
+
+      <button class="send" id="sendButton" type="submit">
+        ➤
+      </button>
+
     </form>
-    <div class="note">VRPAIData AI · AI responses will be connected soon</div>
+
+    <div class="note">
+      VRPAIData AI · Powered by Cloudflare Workers AI
+    </div>
+
   </div>
+
 </main>
 
 <script>
-const form=document.getElementById("chatForm");
-const input=document.getElementById("userInput");
-const messages=document.getElementById("messages");
 
-function addMessage(text,type){
-  const welcome=document.getElementById("welcome");
-  if(welcome) welcome.remove();
+const form = document.getElementById("chatForm");
+const input = document.getElementById("userInput");
+const messages = document.getElementById("messages");
+const sendButton = document.getElementById("sendButton");
 
-  const box=document.createElement("div");
-  box.className="message "+type;
+function addMessage(text, type) {
 
-  const sender=document.createElement("div");
-  sender.className="sender";
-  sender.textContent=type==="user"?"YOU":"VRPAIDATA AI";
+  const welcome = document.getElementById("welcome");
 
-  const content=document.createElement("div");
-  content.textContent=text;
+  if (welcome) {
+    welcome.remove();
+  }
 
-  box.append(sender,content);
+  const box = document.createElement("div");
+  box.className = "message " + type;
+
+  const sender = document.createElement("div");
+  sender.className = "sender";
+
+  sender.textContent =
+    type === "user" ? "YOU" : "VRPAIDATA AI";
+
+  const content = document.createElement("div");
+  content.className = "message-content";
+  content.textContent = text;
+
+  box.appendChild(sender);
+  box.appendChild(content);
+
   messages.appendChild(box);
-  messages.scrollTop=messages.scrollHeight;
+
+  messages.scrollTop = messages.scrollHeight;
+
 }
 
-form.addEventListener("submit",function(e){
-  e.preventDefault();
-  const text=input.value.trim();
-  if(!text)return;
+function showTyping() {
 
-  addMessage(text,"user");
-  input.value="";
+  const typing = document.createElement("div");
 
-  setTimeout(()=>{
+  typing.id = "typing";
+  typing.className = "typing";
+  typing.textContent = "VRPAIData AI is thinking...";
+
+  messages.appendChild(typing);
+
+  messages.scrollTop = messages.scrollHeight;
+
+}
+
+function removeTyping() {
+
+  const typing = document.getElementById("typing");
+
+  if (typing) {
+    typing.remove();
+  }
+
+}
+
+async function sendMessage(text) {
+
+  showTyping();
+
+  sendButton.disabled = true;
+  input.disabled = true;
+
+  try {
+
+    const response = await fetch("/api/chat", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        message: text
+      })
+
+    });
+
+    const data = await response.json();
+
+    removeTyping();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error || "AI service error"
+      );
+
+    }
+
+    if (!data.reply) {
+
+      throw new Error("AI response is empty");
+
+    }
+
+    addMessage(data.reply, "assistant");
+
+  } catch (error) {
+
+    removeTyping();
+
     addMessage(
-      "Thanks for your message! The AI model connection is coming soon.",
+      "Sorry! " + error.message,
       "assistant"
     );
-  },500);
+
+  } finally {
+
+    sendButton.disabled = false;
+    input.disabled = false;
+    input.focus();
+
+  }
+
+}
+
+form.addEventListener("submit", async function(e) {
+
+  e.preventDefault();
+
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addMessage(text, "user");
+
+  input.value = "";
+
+  await sendMessage(text);
+
 });
 
-function newChat(){
-  messages.innerHTML=
-    '<div class="welcome" id="welcome"><h1>Hello! <span class="gradient">Welcome.</span></h1><p>Your intelligent AI workspace starts here. Ask a question and explore new possibilities.</p></div>';
+function newChat() {
+
+  messages.innerHTML = `
+    <div class="welcome" id="welcome">
+      <h1>
+        Hello! <span class="gradient">Welcome.</span>
+      </h1>
+      <p>
+        Your intelligent AI workspace starts here.
+        Ask anything and explore the power of AI.
+      </p>
+    </div>
+  `;
+
+  input.value = "";
+  input.disabled = false;
+  sendButton.disabled = false;
+  input.focus();
+
 }
+
 </script>
+
 </body>
 </html>
