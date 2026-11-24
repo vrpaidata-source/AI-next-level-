@@ -13,16 +13,13 @@ export default {
 
       try {
         if (!env.AI) {
-          throw new Error("Workers AI binding is missing");
+          throw new Error("AI binding not found");
         }
 
         const body = await request.json();
         const message = body.message;
 
-        if (
-          typeof message !== "string" ||
-          !message.trim()
-        ) {
+        if (typeof message !== "string" || !message.trim()) {
           return Response.json(
             { error: "Please enter a message" },
             { status: 400 }
@@ -43,35 +40,43 @@ export default {
               {
                 role: "system",
                 content:
-                  "You are VRPAIData AI, a helpful and intelligent assistant. Reply clearly in the language used by the user."
+                  "You are VRPAIData AI, a friendly intelligent assistant. Reply in the same language as the user."
               },
               {
                 role: "user",
                 content: message.trim()
               }
-            ]
+            ],
+            chat_template_kwargs: {
+              enable_thinking: false
+            },
+            max_tokens: 1024
           }
         );
 
-        const reply = result?.response;
+        console.log("AI result:", JSON.stringify(result));
 
-        if (!reply) {
-          console.error("Empty AI response:", result);
+        const reply =
+          result?.choices?.[0]?.message?.content ??
+          result?.response ??
+          result?.output_text ??
+          "";
 
-          return Response.json(
-            { error: "AI returned an empty response" },
-            { status: 502 }
-          );
+        if (typeof reply !== "string" || !reply.trim()) {
+          throw new Error("AI response format was empty or unexpected");
         }
 
-        return Response.json({ reply });
+        return Response.json({
+          success: true,
+          reply: reply.trim()
+        });
 
       } catch (error) {
         console.error("VRPAIData AI Error:", error);
 
         return Response.json(
           {
-            error: "AI service error. Please check Cloudflare Worker Logs."
+            error: "AI Error: " + (error.message || "Unknown error")
           },
           { status: 500 }
         );
